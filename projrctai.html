@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Interviewer</title>
+</head>
+<body style="text-align:center; font-family:Arial;">
+
+  <h1>🎤 AI Interview Simulator</h1>
+
+  <h2 id="question">Click Start Interview</h2>
+
+  <button onclick="startInterview()">Start Interview</button>
+  <button onclick="startListening()">Answer</button>
+
+  <p><strong>Your Answer:</strong></p>
+  <p id="output"></p>
+
+<script>
+const questions = [
+  "Tell me about yourself",
+  "What is a stack?",
+  "Why should we hire you?",
+  "Explain OOP concepts"
+];
+
+let currentQuestion = "";
+
+// AI SPEAKS
+function speak(text) {
+  const speech = new SpeechSynthesisUtterance(text);
+  speech.lang = "en-US";
+  window.speechSynthesis.speak(speech);
+}
+
+// START INTERVIEW
+function startInterview() {
+  currentQuestion = questions[Math.floor(Math.random() * questions.length)];
+  document.getElementById("question").innerText = currentQuestion;
+  speak(currentQuestion);
+}
+
+// LISTEN USER ANSWER
+function startListening() {
+  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  recognition.lang = "en-US";
+
+  recognition.onresult = function(event) {
+    const transcript = event.results[0][0].transcript;
+    document.getElementById("output").innerText = transcript;
+  };
+
+  recognition.start();
+}
+</script>
+
+</body>
+</html>
